@@ -4,7 +4,9 @@ import { transactionsRoutes } from "./routes/transactions";
 
 const app = fastify();
 
-app.register(transactionsRoutes);
+app.register(transactionsRoutes, {
+  prefix: "transactions",
+});
 
 // app.get("/hello", async () => {
 // const tables = await knex("sqlite_schema").select("*");
