@@ -7,6 +7,14 @@ import { checkSessionIdExists } from "../middlewares/check-session-id-exists";
 // Cookies <--> Formas da gente manter contexto entre requisições
 
 export async function transactionsRoutes(app: FastifyInstance) {
+  // cada plugin do fastify possui um contexto
+  // toda regra criada aqui só será visivel nesse contexto
+
+  // podemos adicionar um preHandler global no contexto com hooks
+  // app.addHook("preHandler", async (request, reply) => {
+  //   console.log(`[${request.method}] ${request.url}`);
+  // });
+
   app.get(
     "/",
     {

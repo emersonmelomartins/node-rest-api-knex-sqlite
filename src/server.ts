@@ -7,6 +7,11 @@ const app = fastify();
 
 app.register(cookie);
 
+// Hook global para todas as rotas
+app.addHook("preHandler", async (request, reply) => {
+  console.log(`[${request.method}] ${request.url}`);
+});
+
 app.register(transactionsRoutes, {
   prefix: "transactions",
 });
