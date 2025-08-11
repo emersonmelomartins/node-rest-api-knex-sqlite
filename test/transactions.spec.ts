@@ -73,4 +73,68 @@ describe("Transactions routes", () => {
       }),
     ]);
   });
+
+  // IMPORTANTE: Os testes devem se adaptar ao código
+
+  test("should be able to get specific transaction", async () => {
+    const createTransactionResponse = await supertest(app.server)
+      .post("/transactions")
+      .send({
+        title: "New Transaction",
+        amount: 5000,
+        type: "credit",
+      });
+
+    const cookies = createTransactionResponse.get("Set-Cookie") ?? [];
+
+    const listTransactionsResponse = await supertest(app.server)
+      .get("/transactions")
+      .set("Cookie", cookies)
+      .expect(200);
+
+    const transactionId = listTransactionsResponse.body.transactions[0].id;
+
+    const getTransactionResponse = await supertest(app.server)
+      .get(`/transactions/${transactionId}`)
+      .set("Cookie", cookies)
+      .expect(200);
+
+    expect(getTransactionResponse.body.transaction).toEqual(
+      expect.objectContaining({
+        title: "New Transaction",
+        amount: 5000,
+        id: expect.any(String),
+      })
+    );
+  });
+
+  test("should be able to get the summary", async () => {
+    const createTransactionResponse = await supertest(app.server)
+      .post("/transactions")
+      .send({
+        title: "Credit Transaction",
+        amount: 5000,
+        type: "credit",
+      });
+
+    const cookies = createTransactionResponse.get("Set-Cookie") ?? [];
+
+    await supertest(app.server)
+      .post("/transactions")
+      .set("Cookie", cookies)
+      .send({
+        title: "Debit Transaction",
+        amount: 2500,
+        type: "debit",
+      });
+
+    const summaryResponse = await supertest(app.server)
+      .get("/transactions/summary")
+      .set("Cookie", cookies)
+      .expect(200);
+
+    expect(summaryResponse.body.summary).toEqual({
+      amount: 2500,
+    });
+  });
 });
