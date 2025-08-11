@@ -1,39 +1,5 @@
-import cookie from "@fastify/cookie";
-import fastify from "fastify";
+import { app } from "./app";
 import { env } from "./env";
-import { transactionsRoutes } from "./routes/transactions";
-
-const app = fastify();
-
-app.register(cookie);
-
-// Hook global para todas as rotas
-app.addHook("preHandler", async (request, reply) => {
-  console.log(`[${request.method}] ${request.url}`);
-});
-
-app.register(transactionsRoutes, {
-  prefix: "transactions",
-});
-
-// app.get("/hello", async () => {
-// const tables = await knex("sqlite_schema").select("*");
-// return tables;
-
-// const transaction = await knex("transactions")
-//   .insert({
-//     id: crypto.randomUUID(),
-//     title: "Transação de teste",
-//     amount: 1000,
-//   })
-//   .returning("*");
-
-//   const transactions = await knex("transactions")
-//     .where("amount", 1000)
-//     .select("*");
-
-//   return transactions;
-// });
 
 app
   .listen({
