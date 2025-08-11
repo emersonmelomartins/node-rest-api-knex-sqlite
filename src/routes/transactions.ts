@@ -4,21 +4,6 @@ import { z } from "zod";
 import { knex } from "../database";
 import { checkSessionIdExists } from "../middlewares/check-session-id-exists";
 
-
-
-/**
- * Testes Unitários => Unidade da sua aplicação
- * Testes de Integração => Comunicação entre duas ou mais unidades
- * Testes e2e (End to End) => Simulam um usuário operando a nossa aplicação
- * 
- * Front-end => Abre a página, digita o text xpto, clique no botão
- * Back-end => Chamadas HTTPS, WebSockets, Etc...
- * 
- * Pirâmide de testes => E2E (Não dependem de nenhuma tecnologia, não dependem de arquitetura)
- */
-
-
-
 // Cookies <--> Formas da gente manter contexto entre requisições
 
 export async function transactionsRoutes(app: FastifyInstance) {
